@@ -48,3 +48,5 @@ class AuthService {
     return this.generateToken(user);
   }
 }
+
+export default new AuthService();
