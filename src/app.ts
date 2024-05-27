@@ -1,14 +1,17 @@
 import express from 'express';
-import usersRoutes from './routes/users.routes';
-
+import routes from './routes';
 const app = express();
 
 app.use(express.json());
 
-app.use('/api', usersRoutes);
+app.use('/', routes);
+
+const port = process.env.PORT || 3000;
+
 const startServer = async () => {
-  app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
 };
+
 startServer();
