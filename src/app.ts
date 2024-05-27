@@ -1,10 +1,11 @@
 import express from 'express';
-import bodyparser from 'body-parser';
+import usersRoutes from './routes/users.routes';
 
 const app = express();
 
-app.use(bodyparser.json());
+app.use(express.json());
 
+app.use('/api', usersRoutes);
 const startServer = async () => {
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
