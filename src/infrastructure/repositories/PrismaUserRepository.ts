@@ -15,9 +15,9 @@ class PrismaUserRepository implements IUserRepository {
     if (!user) return null;
 
     return new User(
-      user.id,
       user.username,
       user.email,
+      user.password,
       user.createdAt,
       user.updatedAt
     );
@@ -28,6 +28,7 @@ class PrismaUserRepository implements IUserRepository {
       data: {
         username: user.username,
         email: user.email,
+        password: user.password,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

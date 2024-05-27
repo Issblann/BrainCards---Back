@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import authService from '../services/authService';
-import User from '../domain/entities/User';
 
 class AuthController {
   async register(req: Request, res: Response): Promise<void> {
@@ -9,8 +8,8 @@ class AuthController {
     try {
       const { email, username, password } = req.body;
 
-      const token = await authService.register(email, username, password);
-      res.json({ token });
+      const user = await authService.register(email, username, password);
+      res.json(user);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
@@ -25,9 +24,9 @@ class AuthController {
     try {
       const { email, password } = req.body;
 
-      const token = await authService.login(email, password);
+      const user = await authService.login(email, password);
 
-      res.json({ token });
+      res.json({ user });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
