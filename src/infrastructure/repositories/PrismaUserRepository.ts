@@ -38,6 +38,21 @@ class PrismaUserRepository implements IUserRepository {
       user.updatedAt
     );
   }
+
+  async findUserById(id: string): Promise<User | null> {
+    const user = await this.prismaClient.user.findUnique({ where: { id } });
+
+    if (!user) return null;
+
+    return new User(
+      user.username,
+      user.email,
+      user.password,
+      user.createdAt,
+      user.updatedAt
+    );
+  }
+
   async createUser(user: User): Promise<void> {
     await this.prismaClient.user.create({ data: user });
   }

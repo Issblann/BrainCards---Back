@@ -7,7 +7,8 @@ class AuthController {
 
     try {
       const { email, username, password } = req.body;
-
+      if (!email || !username || !password)
+        throw new Error('All fields are required');
       const user = await authService.register(email, username, password);
       res.json(user);
     } catch (error) {
@@ -23,9 +24,12 @@ class AuthController {
     // Login user
     try {
       const { email, password } = req.body;
-
+      if (!email || !password) throw new Error('All fields are required');
       const user = await authService.login(email, password);
 
+      const token = authService.generateToken(user);
+
+      res.cookie('token', token, { httpOnly: true });
       res.json({ ...user, message: 'Logged in successfully' });
     } catch (error) {
       if (error instanceof Error) {
@@ -37,6 +41,11 @@ class AuthController {
   }
 
   async logout(req: Request, res: Response): Promise<void> {
+    // const {id} = req.user;
+
+    // await authService.logout(id);
+
+    // res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
   }
 }

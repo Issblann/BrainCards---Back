@@ -4,22 +4,17 @@ import PrismaUserRepository from '../infrastructure/repositories/PrismaUserRepos
 import jwt from 'jsonwebtoken';
 import envs from '../config/env';
 import bcrypt from 'bcrypt';
+import { Response } from 'express';
 
 const userRepository = new PrismaUserRepository(prisma);
 
 class AuthService {
-  private generateToken(user: User): string {
+  generateToken(user: User): string {
+    const payload = { id: user.id, email: user.email };
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-    return jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      envs.jwtSecret,
-      { expiresIn: '1h' }
-    );
+    return jwt.sign(payload, envs.jwtSecret, { expiresIn: '1h' });
   }
 
   async register(
@@ -28,7 +23,6 @@ class AuthService {
     password: string
   ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-
     if (
       (await userRepository.findUserByEmail(email)) ||
       (await userRepository.findUserByUsername(username))
@@ -56,6 +50,15 @@ class AuthService {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
+
+    return user;
+  }
+
+  async logout(id: string): Promise<User> {
+    const user = await userRepository.findUserById(id);
+
+    if (!user) throw new Error('User not found');
+
     return user;
   }
 }
