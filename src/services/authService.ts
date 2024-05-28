@@ -29,6 +29,12 @@ class AuthService {
   ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    if (
+      (await userRepository.findUserByEmail(email)) ||
+      (await userRepository.findUserByUsername(username))
+    )
+      throw new Error('User already exists');
+
     const user = new User(
       username,
       email,
@@ -41,7 +47,7 @@ class AuthService {
     return user;
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(email: string, password: string): Promise<User> {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) throw new Error('User not found');
@@ -50,7 +56,7 @@ class AuthService {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-    return this.generateToken(user);
+    return user;
   }
 }
 

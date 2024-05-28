@@ -1,5 +1,5 @@
 class User {
-  id?: number | string;
+  id?: string;
   username: string;
   email: string;
   password: string;

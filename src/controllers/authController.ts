@@ -26,7 +26,7 @@ class AuthController {
 
       const user = await authService.login(email, password);
 
-      res.json({ user });
+      res.json({ ...user, message: 'Logged in successfully' });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
