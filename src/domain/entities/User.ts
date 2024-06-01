@@ -1,5 +1,4 @@
 class User {
-  id?: number;
   username: string;
   email: string;
   password: string;
@@ -21,4 +20,19 @@ class User {
   }
 }
 
-export default User;
+class AuthenticatedUser extends User {
+  id: string;
+
+  constructor(
+    id: string,
+    username: string,
+    email: string,
+    password: string,
+    createdAt: Date,
+    updatedAt: Date
+  ) {
+    super(username, email, password, createdAt, updatedAt);
+    this.id = id;
+  }
+}
+export { User, AuthenticatedUser };
