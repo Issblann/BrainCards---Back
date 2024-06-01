@@ -1,0 +1,43 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[User] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [username] NVARCHAR(1000),
+    [email] NVARCHAR(1000) NOT NULL,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [User_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIME2 NOT NULL,
+    CONSTRAINT [User_pkey] PRIMARY KEY CLUSTERED ([id]),
+    CONSTRAINT [User_email_key] UNIQUE NONCLUSTERED ([email])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[Profile] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [bio] NVARCHAR(1000),
+    [image] NVARCHAR(1000),
+    [fullName] NVARCHAR(1000),
+    [userId] NVARCHAR(1000) NOT NULL,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [Profile_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIME2 NOT NULL,
+    CONSTRAINT [Profile_pkey] PRIMARY KEY CLUSTERED ([id]),
+    CONSTRAINT [Profile_userId_key] UNIQUE NONCLUSTERED ([userId])
+);
+
+-- AddForeignKey
+ALTER TABLE [dbo].[Profile] ADD CONSTRAINT [Profile_userId_fkey] FOREIGN KEY ([userId]) REFERENCES [dbo].[User]([id]) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
