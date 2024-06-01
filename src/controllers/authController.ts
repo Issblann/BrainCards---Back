@@ -41,12 +41,18 @@ class AuthController {
   }
 
   async logout(req: Request, res: Response): Promise<void> {
-    // const {id} = req.user;
+    try {
+      const userId = (req as any).user;
 
-    // await authService.logout(id);
+      await authService.logout(userId);
 
-    // res.clearCookie('token');
-    res.json({ message: 'Logged out successfully' });
+      res.clearCookie('token');
+
+      res.json({ message: 'Logged out successfully' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'An unknown error occurred with logout' });
+    }
   }
 }
 

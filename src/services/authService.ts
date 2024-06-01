@@ -1,4 +1,4 @@
-import User from '../domain/entities/User';
+import { AuthenticatedUser, User } from '../domain/entities/User';
 import prisma from '../infrastructure/database/prismaClient';
 import PrismaUserRepository from '../infrastructure/repositories/PrismaUserRepository';
 import jwt from 'jsonwebtoken';
@@ -9,12 +9,11 @@ import { Response } from 'express';
 const userRepository = new PrismaUserRepository(prisma);
 
 class AuthService {
-  generateToken(user: User): string {
-    const payload = { id: user.id, email: user.email };
+  generateToken(user: AuthenticatedUser): string {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-    return jwt.sign(payload, envs.jwtSecret, { expiresIn: '1h' });
+    return jwt.sign({ id: user.id }, envs.jwtSecret, { expiresIn: '1h' });
   }
 
   async register(
@@ -41,7 +40,7 @@ class AuthService {
     return user;
   }
 
-  async login(email: string, password: string): Promise<User> {
+  async login(email: string, password: string): Promise<AuthenticatedUser> {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) throw new Error('User not found');

@@ -6,7 +6,8 @@ const authMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.cookies.token;
+
   if (!token) {
     res.status(401).json({ error: 'Token not provided' });
     return;
@@ -15,10 +16,12 @@ const authMiddleware = (
     throw new Error('JWT Secret is not defined');
   }
   try {
-    const decoded = jwt.verify(token, envs.jwtSecret);
-    if (typeof decoded === 'object' && 'id' in decoded) {
-      (req as any).user = (decoded as JwtPayload).id;
+    if (token) {
+      const decoded = jwt.verify(token, envs.jwtSecret) as JwtPayload;
+      (req as any).user = decoded.id;
       next();
+    } else {
+      res.status(401).json({ message: 'Invalid token structure' });
     }
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });

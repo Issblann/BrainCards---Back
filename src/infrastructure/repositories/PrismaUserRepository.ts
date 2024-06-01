@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { IUserRepository } from '../../domain/repositories/IUserRepository';
-import User from '../../domain/entities/User';
+import { AuthenticatedUser, User } from '../../domain/entities/User';
 
 class PrismaUserRepository implements IUserRepository {
   private prismaClient: PrismaClient;
@@ -9,12 +9,13 @@ class PrismaUserRepository implements IUserRepository {
     this.prismaClient = prismaClient;
   }
 
-  async findUserByEmail(email: string): Promise<User | null> {
+  async findUserByEmail(email: string): Promise<AuthenticatedUser | null> {
     const user = await this.prismaClient.user.findUnique({ where: { email } });
 
     if (!user) return null;
 
-    return new User(
+    return new AuthenticatedUser(
+      user.id,
       user.username,
       user.email,
       user.password,
@@ -39,12 +40,13 @@ class PrismaUserRepository implements IUserRepository {
     );
   }
 
-  async findUserById(id: string): Promise<User | null> {
+  async findUserById(id: string): Promise<AuthenticatedUser | null> {
     const user = await this.prismaClient.user.findUnique({ where: { id } });
 
     if (!user) return null;
 
-    return new User(
+    return new AuthenticatedUser(
+      user.id,
       user.username,
       user.email,
       user.password,
