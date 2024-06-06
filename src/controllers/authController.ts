@@ -43,12 +43,13 @@ class AuthController {
   async logout(req: Request, res: Response): Promise<void> {
     try {
       const userId = (req as any).user;
-
+      if (!userId) {
+        return (res as any).status(401).json({ error: 'User not found' });
+      }
       await authService.logout(userId);
 
       res.clearCookie('token');
-
-      res.json({ message: 'Logged out successfully' });
+      res.status(200).send({ meesage: 'Logged out successfully' });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'An unknown error occurred with logout' });

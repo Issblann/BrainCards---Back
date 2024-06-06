@@ -2,30 +2,24 @@ import express from 'express';
 import request from 'supertest';
 import authRoutes from './authRoutes';
 import authService from '../services/authService';
-import envs from '../config/env';
-
+import authMiddleware from '../infrastructure/middleware/authMiddleware';
 const app = express();
 app.use(express.json());
 app.use('/auth', authRoutes);
 
-app.use((req, res, next) => {
-  req.cookies = {
-    token: envs.jwtSecret,
-  };
-  next();
-});
-
+const agent = request.agent(app);
 describe('authRoutes testing', () => {
+  const mockUser = {
+    username: 'test5',
+    email: 'test5.com',
+    password: '$2b$10$b/7fGL1GCrulSDn2proq7uYY7adgiM9RD4eCx3NVB8KeMpsv.gjzS',
+    createdAt: '2024-06-01T03:16:39.784Z',
+    updatedAt: '2024-06-01T03:16:39.784Z',
+    id: 'clwvjkgrt0000bd3rimf9zo7z',
+    message: 'Logged in successfully',
+  };
+
   it('should return 200 when calling POST /auth/login', async () => {
-    const mockUser = {
-      username: 'test5',
-      email: 'test5.com',
-      password: '$2b$10$b/7fGL1GCrulSDn2proq7uYY7adgiM9RD4eCx3NVB8KeMpsv.gjzS',
-      createdAt: '2024-06-01T03:16:39.784Z',
-      updatedAt: '2024-06-01T03:16:39.784Z',
-      id: 'clwvjkgrt0000bd3rimf9zo7z',
-      message: 'Logged in successfully',
-    };
     authService.login = jest.fn().mockResolvedValue(mockUser);
 
     const response = await request(app).post('/auth/login').send({
@@ -33,6 +27,7 @@ describe('authRoutes testing', () => {
       password: '123456',
     });
 
+    expect(response.header['set-cookie']).toBeDefined();
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockUser);
 
@@ -58,34 +53,23 @@ describe('authRoutes testing', () => {
     expect(response.status).toBe(200);
   });
 
-  //   it('should return 200 when calling POST /auth/logout', async () => {
-  //     const responseLogin = await request(app).post('/auth/login').send({
-  //       email: 'test5.com',
-  //       password: '123456',
-  //     });
+  it('should return 200 when calling POST /auth/logout', async () => {
+    const loginResponse = await request(app).post('/auth/login').send({
+      email: 'test5.com',
+      password: '123456',
+    });
 
-  //     const token = responseLogin.body.token;
+    const cookie = loginResponse.header['set-cookie'];
+    expect(cookie).toBeDefined();
+    expect(loginResponse.status).toBe(200);
 
-  //     const response = await request(app)
-  //       .post('/auth/logout')
-  //       .set('Authorization', `Bearer ${token}`);
-  //     // const response = await request(app).post('/auth/logout');
+    // const middleware = jest.fn().mockImplementation(authMiddleware);
+    const response = await request(app)
+      .post('/auth/logout')
+      .set('Cookie', cookie);
 
-  //     if (!envs.jwtSecret) {
-  //       expect(response.status).toBe(500);
-  //     }
+    authService.logout = jest.fn().mockResolvedValue(mockUser);
 
-  //     if (envs.jwtSecret) {
-  //       expect(response.status).toBe(200);
-  //     }
-  //     //   expect(response.body).toEqual({ message: 'Logged out successfully' });
-  //   });
-
-  //   it('should return 401 when calling POST /auth/logout without authenticated user', async () => {
-  //     // Simula una solicitud sin cookie de autenticación
-  //     const response = await request(app).post('/auth/logout');
-
-  //     // Verifica si la solicitud devuelve un estado 401 Unauthorized
-  //     expect(response.status).toBe(401);
-  //   });
+    console.log(response.body);
+  });
 });
