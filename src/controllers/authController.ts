@@ -29,7 +29,7 @@ class AuthController {
 
       const token = authService.generateToken(user);
 
-      res.cookie('token', token, { httpOnly: true });
+      res.cookie('token', token);
       res.json({ ...user, message: 'Logged in successfully' });
     } catch (error) {
       if (error instanceof Error) {
@@ -40,14 +40,11 @@ class AuthController {
     }
   }
 
+  // Logout user
   async logout(req: Request, res: Response): Promise<void> {
     try {
-      const userId = (req as any).user;
-      if (!userId) {
-        return (res as any).status(401).json({ error: 'User not found' });
-      }
-      await authService.logout(userId);
-
+      const cookie = req.cookies.token;
+      if (!cookie) throw new Error('Token not provided');
       res.clearCookie('token');
       res.status(200).send({ meesage: 'Logged out successfully' });
     } catch (error) {

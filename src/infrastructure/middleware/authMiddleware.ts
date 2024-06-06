@@ -12,20 +12,8 @@ const authMiddleware = (
     res.status(401).json({ error: 'Token not provided' });
     return;
   }
-  if (!envs.jwtSecret) {
-    throw new Error('JWT Secret is not defined');
-  }
-  try {
-    if (token) {
-      const decoded = jwt.verify(token, envs.jwtSecret) as JwtPayload;
-      (req as any).user = decoded.id;
-      next();
-    } else {
-      res.status(401).json({ message: 'Invalid token structure' });
-    }
-  } catch (error) {
-    res.status(401).json({ message: 'Invalid token' });
-  }
+
+  next();
 };
 
 export default authMiddleware;

@@ -4,7 +4,7 @@ import PrismaUserRepository from '../infrastructure/repositories/PrismaUserRepos
 import jwt from 'jsonwebtoken';
 import envs from '../config/env';
 import bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 const userRepository = new PrismaUserRepository(prisma);
 
@@ -49,14 +49,6 @@ class AuthService {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-
-    return user;
-  }
-
-  async logout(id: string): Promise<User> {
-    const user = await userRepository.findUserById(id);
-
-    if (!user) throw new Error('User not found');
 
     return user;
   }
