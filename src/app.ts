@@ -8,6 +8,18 @@ import swaggerui from 'swagger-ui-express';
 import { swaggerSpecs } from './routes/swagger';
 const app = express();
 app.use(express.json());
+
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', envs.clientUrl as string);
+
+  // Request headers you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type'
+  );
+  next();
+});
 app.use(cookieParser());
 app.use('/', routes);
 
@@ -32,6 +44,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.options('*', cors(corsOptions));
 const port = envs.port || 3000;
 
 const startServer = async () => {
