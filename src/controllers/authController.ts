@@ -27,6 +27,9 @@ class AuthController {
       if (!email || !password) throw new Error('All fields are required');
       const user = await authService.login(email, password);
 
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+      }
       const token = authService.generateToken(user);
 
       res.cookie('token', token);
