@@ -44,7 +44,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.options('*', cors(corsOptions));
 const port = envs.port || 3000;
 
 const startServer = async () => {
