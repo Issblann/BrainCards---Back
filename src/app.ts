@@ -18,9 +18,15 @@ app.use(function (req, res, next) {
     'Access-Control-Allow-Headers',
     'X-Requested-With,content-type'
   );
+  res.setHeader('Access-Control-Allow-Credentials', true.toString());
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
   next();
 });
 app.use(cookieParser());
+
 app.use('/', routes);
 
 const swaggerDocs = (app: any, port: string | number) => {
@@ -39,7 +45,8 @@ app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerSpecs));
 const corsOptions = {
   origin: envs.clientUrl,
   optionsSuccessStatus: 200,
-  methods: 'GET, POST, PUT, DELETE',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));

@@ -31,7 +31,6 @@ class AuthController {
         res.status(404).json({ error: 'User not found' });
       }
       const token = authService.generateToken(user);
-
       res.cookie('token', token);
       res.json({ ...user, message: 'Logged in successfully' });
     } catch (error) {

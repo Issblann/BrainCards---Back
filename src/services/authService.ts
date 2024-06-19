@@ -13,7 +13,14 @@ class AuthService {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-    return jwt.sign({ id: user.id }, envs.jwtSecret, { expiresIn: '1h' });
+
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    };
+    const token = jwt.sign(tokenPayload, envs.jwtSecret);
+    return token;
   }
 
   async register(
