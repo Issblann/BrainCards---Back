@@ -35,13 +35,7 @@ class AuthService {
     )
       throw new Error('User already exists');
 
-    const user = new User(
-      username,
-      email,
-      hashedPassword,
-      new Date(),
-      new Date()
-    );
+    const user = new User(username, email, hashedPassword, new Date());
 
     await userRepository.createUser(user);
     return user;

@@ -15,21 +15,43 @@ model User {
   id        String   @id @default(cuid())
   username  String    @unique
   email     String   @unique
-  password String  
+  password  String  
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profile Profile?
+  Profile   Profile?
+  FlasCard  FlashCard[] 
+  Box       Box[]
 }
 
 model Profile {
   id        String   @id @default(cuid())
-  bio       String?
-  image    String?
-  fullName  String?
-  userId   String @unique
+  userId    String @unique
   user User @relation(fields: [userId], references: [id])
-   createdAt DateTime @default(now())
+  name      String
+  lastName  String?
+  bio       String?
+  image     String?
   updatedAt DateTime @updatedAt
-
 }
 
+model FlashCard { 
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User @relation(fields: [userId], references: [id])
+  boxId     String
+  question  String
+  answer    String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  box       Box   @relation(fields: [boxId], references: [id])
+}
+
+model Box {
+  id        String   @id @default(cuid())
+  title      String
+  userId    String   @unique
+  user      User @relation(fields: [userId], references: [id])
+  flashCard FlashCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

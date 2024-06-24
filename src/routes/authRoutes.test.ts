@@ -68,8 +68,6 @@ describe('authRoutes testing', () => {
       .post('/auth/logout')
       .set('Cookie', cookie);
 
-    authService.logout = jest.fn().mockResolvedValue(mockUser);
-
     console.log(response.body);
   });
 });
