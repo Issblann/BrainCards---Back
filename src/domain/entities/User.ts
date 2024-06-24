@@ -3,20 +3,17 @@ class User {
   email: string;
   password: string;
   createdAt: Date;
-  updatedAt: Date;
 
   constructor(
     username: string,
     email: string,
     password: string,
-    createdAt: Date,
-    updatedAt: Date
+    createdAt: Date
   ) {
     this.username = username;
     this.email = email;
     this.password = password;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 }
 
@@ -28,10 +25,9 @@ class AuthenticatedUser extends User {
     username: string,
     email: string,
     password: string,
-    createdAt: Date,
-    updatedAt: Date
+    createdAt: Date
   ) {
-    super(username, email, password, createdAt, updatedAt);
+    super(username, email, password, createdAt);
     this.id = id;
   }
 }

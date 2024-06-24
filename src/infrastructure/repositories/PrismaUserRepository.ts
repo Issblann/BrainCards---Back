@@ -19,8 +19,7 @@ class PrismaUserRepository implements IUserRepository {
       user.username,
       user.email,
       user.password,
-      user.createdAt,
-      user.updatedAt
+      user.createdAt
     );
   }
 
@@ -31,13 +30,7 @@ class PrismaUserRepository implements IUserRepository {
 
     if (!user) return null;
 
-    return new User(
-      user.username,
-      user.email,
-      user.password,
-      user.createdAt,
-      user.updatedAt
-    );
+    return new User(user.username, user.email, user.password, user.createdAt);
   }
 
   async findUserById(id: string): Promise<AuthenticatedUser | null> {
@@ -50,8 +43,7 @@ class PrismaUserRepository implements IUserRepository {
       user.username,
       user.email,
       user.password,
-      user.createdAt,
-      user.updatedAt
+      user.createdAt
     );
   }
 
