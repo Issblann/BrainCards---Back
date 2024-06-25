@@ -18,7 +18,7 @@ model User {
   password  String  
   createdAt DateTime @default(now())
   Profile   Profile?
-  FlasCard  FlashCard[] 
+  Deck      Deck[]
   Box       Box[]
 }
 
@@ -35,23 +35,32 @@ model Profile {
 
 model FlashCard { 
   id        String   @id @default(cuid())
-  userId    String   @unique
-  user      User @relation(fields: [userId], references: [id])
-  boxId     String
+  deckId    String
+  deck      Deck   @relation(fields: [deckId], references: [id])
   question  String
   answer    String
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  box       Box   @relation(fields: [boxId], references: [id])
 }
 
+model Deck {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User @relation(fields: [userId], references: [id])
+  boxId     String?
+  box       Box?  @relation(fields: [boxId], references: [id])
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  FlashCard FlashCard[]
+}
 model Box {
   id        String   @id @default(cuid())
   title      String
   userId    String   @unique
   user      User @relation(fields: [userId], references: [id])
-  flashCard FlashCard[]
+  decks     Deck[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
