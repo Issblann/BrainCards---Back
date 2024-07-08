@@ -4,10 +4,11 @@ import PrismaUserRepository from '../infrastructure/repositories/PrismaUserRepos
 import jwt from 'jsonwebtoken';
 import envs from '../config/env';
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import PrismaProfileRepository from '../infrastructure/repositories/PrismaProfileRepository';
+import { Profile } from '../domain/entities/Profile';
 
 const userRepository = new PrismaUserRepository(prisma);
-
+const profileRepository = new PrismaProfileRepository(prisma);
 class AuthService {
   generateToken(user: AuthenticatedUser): string {
     if (!envs.jwtSecret) {
@@ -36,9 +37,19 @@ class AuthService {
       throw new Error('User already exists');
 
     const user = new User(username, email, hashedPassword, new Date());
+    const createdUser = await userRepository.createUser(user);
 
-    await userRepository.createUser(user);
-    return user;
+    const profile = new Profile(
+      createdUser.id,
+      createdUser.username,
+      '',
+      '',
+      '',
+      new Date()
+    );
+    await profileRepository.createProfile(profile);
+
+    return createdUser;
   }
 
   async login(email: string, password: string): Promise<AuthenticatedUser> {
@@ -50,7 +61,11 @@ class AuthService {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
-
+    let profile = await profileRepository.getProfileByUserId(user.id);
+    if (!profile) {
+      profile = new Profile(user.id, user.username, '', '', '', new Date());
+      await profileRepository.createProfile(profile);
+    }
     return user;
   }
 }

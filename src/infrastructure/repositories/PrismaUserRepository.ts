@@ -47,8 +47,8 @@ class PrismaUserRepository implements IUserRepository {
     );
   }
 
-  async createUser(user: User): Promise<void> {
-    await this.prismaClient.user.create({ data: user });
+  async createUser(user: User): Promise<AuthenticatedUser> {
+    return await this.prismaClient.user.create({ data: user });
   }
 }
 
