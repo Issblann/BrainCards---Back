@@ -4,6 +4,6 @@ import profileController from '../controllers/profileController';
 
 const router = Router();
 
-router.get('/profile', authMiddleware, profileController.getProfile);
+router.get('/profile/:userId', authMiddleware, profileController.getProfile);
 
 export default router;
