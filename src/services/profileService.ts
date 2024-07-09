@@ -22,11 +22,11 @@ class ProfileService {
       bio: profileData.bio,
       image: profileData.image,
     };
+
     const updatedProfile = await profileRepository.updateProfileById(
       id,
       updatedData
     );
-    console.log('updated profile', updatedProfile);
     return updatedProfile;
   }
 }

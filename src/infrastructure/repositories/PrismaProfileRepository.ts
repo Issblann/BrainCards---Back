@@ -39,7 +39,8 @@ class PrismaProfileRepository implements IProfileRepository {
       profileData.lastName || '',
       profileData.bio || '',
       profileData.image || '',
-      profileData.updatedAt
+      profileData.updatedAt,
+      profileData.id
     );
   }
 

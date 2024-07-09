@@ -4,7 +4,6 @@ import ProfileService from '../services/profileService';
 class ProfileController {
   async getProfile(req: Request, res: Response) {
     // Get user profile
-
     const { userId } = req.params;
     try {
       if (!userId) throw new Error('User id is required');
@@ -22,12 +21,13 @@ class ProfileController {
     }
   }
 
+  // Update user profile
   async updateProfile(req: Request, res: Response) {
     const { name, lastName, bio, image } = req.body;
     const { id } = req.params;
-    console.log(id);
     try {
       if (!id) throw new Error('Profile id is required');
+
       const profile = {
         name,
         lastName,
@@ -35,10 +35,18 @@ class ProfileController {
         image,
       };
       const profileData = await ProfileService.updateProfile(id, profile);
-      // console.log(profileData);
       res.json({ profile: profileData, message: 'Profile updated' });
     } catch (error) {
-      res.status(500).json({ error: 'El error es aqui' });
+      if (bio && typeof bio !== 'string') {
+        return res.status(400).json({ message: 'Bio must be a string' });
+      }
+      if (lastName && typeof lastName !== 'string') {
+        return res.status(400).json({ message: 'Last name must be a string' });
+      }
+      if (name && typeof name !== 'string') {
+        return res.status(400).json({ message: 'Name must be a string' });
+      }
+      res.status(500).json({ error: 'An unknown error occurred' });
     }
   }
 }
