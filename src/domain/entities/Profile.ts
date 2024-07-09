@@ -2,9 +2,9 @@ class Profile {
   id?: string;
   userId: string;
   name: string;
-  lastName?: string;
-  bio?: string;
-  image?: string;
+  lastName?: string | null;
+  bio?: string | null;
+  image?: string | null;
   updatedAt: Date | null;
 
   constructor(

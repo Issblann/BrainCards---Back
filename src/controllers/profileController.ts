@@ -21,6 +21,26 @@ class ProfileController {
       }
     }
   }
+
+  async updateProfile(req: Request, res: Response) {
+    const { name, lastName, bio, image } = req.body;
+    const { id } = req.params;
+    console.log(id);
+    try {
+      if (!id) throw new Error('Profile id is required');
+      const profile = {
+        name,
+        lastName,
+        bio,
+        image,
+      };
+      const profileData = await ProfileService.updateProfile(id, profile);
+      // console.log(profileData);
+      res.json({ profile: profileData, message: 'Profile updated' });
+    } catch (error) {
+      res.status(500).json({ error: 'El error es aqui' });
+    }
+  }
 }
 
 export default new ProfileController();

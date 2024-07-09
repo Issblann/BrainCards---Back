@@ -43,17 +43,21 @@ class PrismaProfileRepository implements IProfileRepository {
     );
   }
 
-  async updateProfile(profile: Profile): Promise<void> {
-    await this.prismaClient.profile.update({
-      where: { id: profile.id },
+  async updateProfileById(
+    id: string,
+    profile: Partial<Profile>
+  ): Promise<Profile> {
+    const profileData = await this.prismaClient.profile.update({
+      where: { id: id },
       data: {
         name: profile.name,
         lastName: profile.lastName,
         bio: profile.bio,
         image: profile.image,
-        updatedAt: new Date(),
       },
     });
+
+    return profileData;
   }
 }
 
