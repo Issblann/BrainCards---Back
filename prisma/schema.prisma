@@ -53,7 +53,7 @@ model Deck {
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  FlashCard FlashCard[]
+  flashCards FlashCard[]
 }
 model Box {
   id        String   @id @default(cuid())
