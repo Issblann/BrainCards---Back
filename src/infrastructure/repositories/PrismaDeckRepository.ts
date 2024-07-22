@@ -9,35 +9,24 @@ class PrismaDeckRepository implements IDeckRepository {
     this.prismaClient = prismaClient;
   }
 
-  async createDeck(deck: Deck): Promise<any> {
+  async createDeck(deck: Deck): Promise<Deck> {
     //cambiar any por Deck
     const resultCreateDeck = await this.prismaClient.deck.create({
       data: {
         title: deck.title,
         userId: deck.userId,
-        boxId: deck.boxId,
-        FlashCard: {
-          create: deck.FlashCard.map((flashCard) => {
-            return {
-              question: flashCard.question,
-              answer: flashCard.answer,
-              image: flashCard.image,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            };
-          }),
-        },
-
+        boxId: deck.boxId || null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     });
-
     console.log(resultCreateDeck);
     return resultCreateDeck;
   }
 
-  // await getDecksByUserId(userId: string): Promise<Deck[]> {}
+  //    await getDecksByUserId(userId: string): Promise<Deck[]> {
+
+  //    }
 
   // await getDecksByBoxId(boxId: string): Promise<Deck[]> {}
 }
