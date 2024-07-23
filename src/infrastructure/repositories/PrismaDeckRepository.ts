@@ -29,6 +29,9 @@ class PrismaDeckRepository implements IDeckRepository {
       where: {
         userId: userId,
       },
+      include: {
+        flashCards: true,
+      },
     });
     return resultGetDecksByUserId;
   }
