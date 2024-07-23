@@ -24,6 +24,14 @@ class PrismaDeckRepository implements IDeckRepository {
     return resultCreateDeck;
   }
 
+  async getDecksByUserId(userId: string): Promise<Deck[]> {
+    const resultGetDecksByUserId = await this.prismaClient.deck.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    return resultGetDecksByUserId;
+  }
   //    await getDecksByUserId(userId: string): Promise<Deck[]> {
 
   //    }

@@ -46,7 +46,7 @@ model FlashCard {
 
 model Deck {
   id        String   @id @default(cuid())
-  userId    String   @unique
+  userId    String  
   user      User @relation(fields: [userId], references: [id])
   boxId     String?
   box       Box?  @relation(fields: [boxId], references: [id])
@@ -57,8 +57,8 @@ model Deck {
 }
 model Box {
   id        String   @id @default(cuid())
-  title      String
-  userId    String   @unique
+  title     String
+  userId    String   
   user      User @relation(fields: [userId], references: [id])
   decks     Deck[]
   createdAt DateTime @default(now())
