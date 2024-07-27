@@ -1,24 +1,24 @@
 import { Deck } from './Deck';
 
 class Box {
-  title: string;
+  boxName: string;
   userId: string;
-  Decks: Deck[];
+  decks: Deck[];
   createdAt: Date;
   updatedAt?: Date;
   id?: string;
 
   constructor(
-    title: string,
+    boxName: string,
     userId: string,
-    Decks: Deck[],
+    decks: Deck[],
     createdAt: Date,
     updatedAt: Date,
     id?: string
   ) {
-    this.title = title;
+    this.boxName = boxName;
     this.userId = userId;
-    this.Decks = Decks;
+    this.decks = decks;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.id = id;
