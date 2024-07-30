@@ -15,7 +15,7 @@ class PrismaDeckRepository implements IDeckRepository {
       data: {
         title: deck.title,
         userId: deck.userId,
-        boxId: deck.boxId || null,
+        boxId: deck.boxId,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

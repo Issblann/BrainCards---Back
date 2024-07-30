@@ -6,6 +6,7 @@ import envs from '../config/env';
 import bcrypt from 'bcrypt';
 import PrismaProfileRepository from '../infrastructure/repositories/PrismaProfileRepository';
 import { Profile } from '../domain/entities/Profile';
+import boxService from './boxService';
 
 const userRepository = new PrismaUserRepository(prisma);
 const profileRepository = new PrismaProfileRepository(prisma);
@@ -49,6 +50,22 @@ class AuthService {
     );
     await profileRepository.createProfile(profile);
 
+    const box = {
+      boxName: 'All',
+      userId: createdUser.id,
+      decks: [
+        {
+          userId: createdUser.id,
+          title: 'Example Deck',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    await boxService.createBox(box);
     return createdUser;
   }
 

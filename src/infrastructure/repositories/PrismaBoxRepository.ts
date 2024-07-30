@@ -27,7 +27,12 @@ class PrismaBoxRepository implements IBoxRepository {
         boxName: box.boxName,
         userId: box.userId,
         decks: {
-          create: [],
+          create: box.decks.map((deck: any) => ({
+            title: deck.title,
+            userId: deck.userId,
+            createdAt: deck.createdAt,
+            updatedAt: deck.updatedAt,
+          })),
         },
         createdAt: new Date(),
         updatedAt: new Date(),

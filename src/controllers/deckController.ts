@@ -3,7 +3,7 @@ import DeckService from '../services/deckService';
 
 class DeckController {
   async createDeck(req: Request, res: Response): Promise<void> {
-    const { title } = req.body;
+    const { title, boxId } = req.body;
     const { userId } = req.params;
     try {
       if (!title) {
@@ -18,7 +18,7 @@ class DeckController {
       const deck = {
         title,
         userId,
-        boxId: null,
+        boxId,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
