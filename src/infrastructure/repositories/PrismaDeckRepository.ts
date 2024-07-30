@@ -10,10 +10,10 @@ class PrismaDeckRepository implements IDeckRepository {
   }
 
   async createDeck(deck: Deck): Promise<Deck> {
-    //cambiar any por Deck
     const resultCreateDeck = await this.prismaClient.deck.create({
       data: {
         title: deck.title,
+        description: deck.description,
         userId: deck.userId,
         boxId: deck.boxId,
         createdAt: new Date(),
@@ -21,6 +21,38 @@ class PrismaDeckRepository implements IDeckRepository {
       },
     });
     console.log(resultCreateDeck);
+
+    await this.prismaClient.box.update({
+      where: {
+        id: deck.boxId ?? undefined,
+      },
+      data: {
+        decks: {
+          connect: { id: resultCreateDeck.id },
+        },
+      },
+    });
+    const allBox = await this.prismaClient.box.findFirst({
+      where: {
+        boxName: 'All',
+        userId: deck.userId,
+      },
+    });
+
+    if (allBox) {
+      await this.prismaClient.box.update({
+        where: {
+          id: allBox.id,
+        },
+        data: {
+          decks: {
+            connect: {
+              id: resultCreateDeck.id,
+            },
+          },
+        },
+      });
+    }
     return resultCreateDeck;
   }
 
@@ -35,9 +67,6 @@ class PrismaDeckRepository implements IDeckRepository {
     });
     return resultGetDecksByUserId;
   }
-  //    await getDecksByUserId(userId: string): Promise<Deck[]> {
-
-  //    }
 
   // await getDecksByBoxId(boxId: string): Promise<Deck[]> {}
 }

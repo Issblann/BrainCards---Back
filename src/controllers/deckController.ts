@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import DeckService from '../services/deckService';
+import { Deck } from '../domain/entities/Deck';
 
 class DeckController {
-  async createDeck(req: Request, res: Response): Promise<void> {
-    const { title, boxId } = req.body;
+  async createDeck(req: Request, res: Response): Promise<void | Deck> {
+    const { title, description, boxId } = req.body;
     const { userId } = req.params;
     try {
       if (!title) {
@@ -17,6 +18,7 @@ class DeckController {
       }
       const deck = {
         title,
+        description,
         userId,
         boxId,
         createdAt: new Date(),
@@ -25,7 +27,7 @@ class DeckController {
       const newDeck = await DeckService.createDeck(deck);
       res.json(newDeck);
     } catch (error) {
-      let errorMessage = 'An unknown error occurred';
+      let errorMessage = 'An unknown error occurred creating the deck';
       if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -39,7 +41,9 @@ class DeckController {
       const decks = await DeckService.getDecksByUserId(userId);
       res.json(decks);
     } catch (error) {
-      res.status(500).json({ error: 'An unknown error occurred' });
+      res.status(500).json({
+        error: 'An unknown error occurred getting the decks by userId',
+      });
     }
   }
 }

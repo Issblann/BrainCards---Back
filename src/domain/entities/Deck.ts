@@ -1,9 +1,9 @@
 import { FlashCard } from './FlashCard';
-
 class Deck {
   id?: string;
   userId: string;
   boxId?: string | null;
+  description?: string | null;
   title: string;
   flashCards?: FlashCard[];
   createdAt: Date;
@@ -15,14 +15,16 @@ class Deck {
     createdAt: Date,
     updatedAt: Date,
     id?: string,
-    boxId?: string,
-    flashCards?: FlashCard[]
+    description?: string,
+    flashCards?: FlashCard[],
+    boxId?: string | null
   ) {
     this.id = id;
     this.userId = userId;
-    this.boxId = boxId;
     this.title = title;
+    this.description = description;
     this.flashCards = flashCards;
+    this.boxId = boxId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

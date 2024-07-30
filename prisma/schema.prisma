@@ -49,7 +49,7 @@ model Deck {
   userId    String  
   user      User @relation(fields: [userId], references: [id])
   boxId     String?
-  box       Box?  @relation(fields: [boxId], references: [id])
+  boxes      Box[]  @relation("DecksOnBoxes")
   title     String
   description String?
   createdAt DateTime @default(now())
@@ -61,7 +61,7 @@ model Box {
   boxName     String
   userId    String   
   user      User @relation(fields: [userId], references: [id])
-  decks     Deck[]
+  decks     Deck[] @relation("DecksOnBoxes")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
