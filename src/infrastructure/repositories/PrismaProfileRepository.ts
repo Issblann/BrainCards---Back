@@ -12,7 +12,7 @@ class PrismaProfileRepository implements IProfileRepository {
   async createProfile(profile: Profile): Promise<void> {
     const resultcreateprofile = await this.prismaClient.profile.create({
       data: {
-        userId: profile.userId,
+        userId: profile.userId || '',
         name: profile.name,
         lastName: profile.lastName,
         bio: profile.bio,
@@ -24,7 +24,9 @@ class PrismaProfileRepository implements IProfileRepository {
     console.log(resultcreateprofile);
   }
 
-  async getProfileByUserId(userId: string): Promise<Profile | null> {
+  async getProfileByUserId(
+    userId: string | undefined
+  ): Promise<Profile | null> {
     const profileData = await this.prismaClient.profile.findUnique({
       where: { userId },
     });

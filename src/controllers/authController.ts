@@ -54,6 +54,29 @@ class AuthController {
       res.status(500).json({ error: 'An unknown error occurred with logout' });
     }
   }
+
+  async googleAuth(req: Request, res: Response): Promise<void> {
+    // Google auth
+    const { id, email, username, password } = req.body;
+
+    try {
+      let user = await authService.findUserByEmail(email);
+
+      if (!user) {
+        user = await authService.register(email, username, id);
+      } else {
+        user = await authService.login(email);
+      }
+
+      const token = authService.generateToken(user);
+      res.json({ user, token });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ error: 'An unknown error occurred with google auth' });
+    }
+  }
 }
 
 export default new AuthController();

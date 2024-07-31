@@ -2,7 +2,7 @@ import { Deck } from './Deck';
 
 class Box {
   boxName: string;
-  userId: string;
+  userId: string | undefined;
   decks: Deck[];
   createdAt: Date;
   updatedAt?: Date;

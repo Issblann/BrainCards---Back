@@ -1,4 +1,4 @@
-import { AuthenticatedUser, User } from '../domain/entities/User';
+import { User } from '../domain/entities/User';
 import prisma from '../infrastructure/database/prismaClient';
 import PrismaUserRepository from '../infrastructure/repositories/PrismaUserRepository';
 import jwt from 'jsonwebtoken';
@@ -11,7 +11,7 @@ import boxService from './boxService';
 const userRepository = new PrismaUserRepository(prisma);
 const profileRepository = new PrismaProfileRepository(prisma);
 class AuthService {
-  generateToken(user: AuthenticatedUser): string {
+  generateToken(user: User): string {
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
@@ -28,9 +28,9 @@ class AuthService {
   async register(
     email: string,
     username: string,
-    password: string
+    password?: string
   ): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password || '', 10);
     if (
       (await userRepository.findUserByEmail(email)) ||
       (await userRepository.findUserByUsername(username))
@@ -41,7 +41,7 @@ class AuthService {
     const createdUser = await userRepository.createUser(user);
 
     const profile = new Profile(
-      createdUser.id,
+      createdUser.id || '',
       createdUser.username,
       '',
       '',
@@ -69,11 +69,11 @@ class AuthService {
     return createdUser;
   }
 
-  async login(email: string, password: string): Promise<AuthenticatedUser> {
+  async login(email: string, password?: string): Promise<User> {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) throw new Error('User not found');
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password || '', user.password);
     if (!isPasswordValid) throw new Error('Invalid credentials');
     if (!envs.jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
@@ -84,6 +84,10 @@ class AuthService {
       await profileRepository.createProfile(profile);
     }
     return user;
+  }
+
+  async findUserByEmail(email: string): Promise<User | null> {
+    return await userRepository.findUserByEmail(email);
   }
 }
 

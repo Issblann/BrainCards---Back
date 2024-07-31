@@ -1,6 +1,6 @@
 class Profile {
   id?: string;
-  userId: string;
+  userId: string | undefined;
   name: string;
   lastName?: string | null;
   bio?: string | null;
@@ -8,7 +8,7 @@ class Profile {
   updatedAt: Date | null;
 
   constructor(
-    userId: string,
+    userId: string | undefined,
     name: string,
     lastName: string,
     bio: string,

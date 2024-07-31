@@ -114,4 +114,5 @@ router.post('/register', authController.register);
  */
 router.post('/logout', authMiddleware, authController.logout);
 
+router.post('/loginWithGoogle', authController.googleAuth);
 export default router;

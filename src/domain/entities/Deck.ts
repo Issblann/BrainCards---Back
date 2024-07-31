@@ -1,7 +1,7 @@
 import { FlashCard } from './FlashCard';
 class Deck {
   id?: string;
-  userId: string;
+  userId: string | undefined;
   boxId?: string | null;
   description?: string | null;
   title: string;

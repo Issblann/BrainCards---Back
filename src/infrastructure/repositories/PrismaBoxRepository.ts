@@ -25,7 +25,7 @@ class PrismaBoxRepository implements IBoxRepository {
     const newBox = await this.prismaClient.box.create({
       data: {
         boxName: box.boxName,
-        userId: box.userId,
+        userId: box.userId || '',
         decks: {
           create: box.decks.map((deck: any) => ({
             title: deck.title,
