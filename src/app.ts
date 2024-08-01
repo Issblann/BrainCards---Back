@@ -4,6 +4,7 @@ import envs from './config/env';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import swaggerui from 'swagger-ui-express';
+const path = require('path');
 
 import { swaggerSpecs } from './routes/swagger';
 const app = express();
@@ -52,6 +53,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const port = envs.port || 3000;
+app.use('/uploads', express.static('uploads'));
 
 const startServer = async () => {
   app.listen(port, () => {

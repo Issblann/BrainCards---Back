@@ -23,16 +23,16 @@ class ProfileController {
 
   // Update user profile
   async updateProfile(req: Request, res: Response) {
-    const { name, lastName, bio, image } = req.body;
+    const { name, lastName, bio } = req.body;
     const { id } = req.params;
     try {
       if (!id) throw new Error('Profile id is required');
-
+      const imagePath = req.file ? req.file.path : null;
       const profile = {
         name,
         lastName,
         bio,
-        image,
+        image: imagePath,
       };
       const profileData = await ProfileService.updateProfile(id, profile);
       res.json({ profile: profileData, message: 'Profile updated' });
