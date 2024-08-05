@@ -50,13 +50,20 @@ class PrismaProfileRepository implements IProfileRepository {
     id: string,
     profile: Partial<Profile>
   ): Promise<Profile> {
+    const getProfileData = await this.prismaClient.profile.findUnique({
+      where: { id },
+    });
+
     const profileData = await this.prismaClient.profile.update({
       where: { id: id },
       data: {
-        name: profile.name,
-        lastName: profile.lastName,
-        bio: profile.bio,
-        image: profile.image,
+        ...getProfileData,
+        name: profile.name ? profile.name : getProfileData?.name,
+        lastName: profile.lastName
+          ? profile.lastName
+          : getProfileData?.lastName,
+        bio: profile.bio ? profile.bio : getProfileData?.bio,
+        image: profile.image ? profile.image : getProfileData?.image,
       },
     });
 
