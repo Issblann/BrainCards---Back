@@ -25,7 +25,7 @@ const router = Router();
  *        password:
  *          type: string
  *       example:
- *          email: "test5.com"
+ *          email: "test5@gmail.com"
  *          password: "123456"
  *     UserRegister:
  *       type: object
@@ -41,8 +41,8 @@ const router = Router();
  *        password:
  *          type: string
  *       example:
- *          email: "test5.com"
- *          username: "test5"
+ *          email: "test4@gmail.com"
+ *          username: "test4"
  *          password: "123456"
  */
 
