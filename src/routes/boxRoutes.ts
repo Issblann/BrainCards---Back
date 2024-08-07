@@ -46,26 +46,16 @@ const router = Router();
  *          schema:
  *            type: object
  *            required:
- *              - name
+ *              - boxName
  *            properties:
- *              name:
+ *              boxName:
  *                type: string
- *                description: The name of the user.
- *              lastName:
- *                type: string
- *                description: The last name of the user (optional).
- *              bio:
- *                type: string
- *                description: A short bio or description of the user (optional).
- *              image:
- *                type: string
- *                format: uri
- *                description: URL of the profile image (optional).
+ *                description: The boxName of the box.
  *            example:
  *              boxName: "History"
  *     responses:
  *       '201':
- *         description: Successfully retrieved the user boxes.
+ *         description: Successfully creating the user boxes.
  *       '400':
  *         description: Bad request, e.g., invalid `userId` format.
  *       '404':
