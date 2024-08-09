@@ -46,21 +46,22 @@ model FlashCard {
 
 model Deck {
   id        String   @id @default(cuid())
-  userId    String   @unique
+  userId    String  
   user      User @relation(fields: [userId], references: [id])
   boxId     String?
-  box       Box?  @relation(fields: [boxId], references: [id])
+  boxes      Box[]  @relation("DecksOnBoxes")
   title     String
+  description String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  FlashCard FlashCard[]
+  flashCards FlashCard[]
 }
 model Box {
   id        String   @id @default(cuid())
-  title      String
-  userId    String   @unique
+  boxName     String
+  userId    String   
   user      User @relation(fields: [userId], references: [id])
-  decks     Deck[]
+  decks     Deck[] @relation("DecksOnBoxes")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { IUserRepository } from '../../domain/repositories/IUserRepository';
-import { AuthenticatedUser, User } from '../../domain/entities/User';
+import { User } from '../../domain/entities/User';
 
 class PrismaUserRepository implements IUserRepository {
   private prismaClient: PrismaClient;
@@ -9,17 +9,17 @@ class PrismaUserRepository implements IUserRepository {
     this.prismaClient = prismaClient;
   }
 
-  async findUserByEmail(email: string): Promise<AuthenticatedUser | null> {
+  async findUserByEmail(email: string): Promise<User | null> {
     const user = await this.prismaClient.user.findUnique({ where: { email } });
 
     if (!user) return null;
 
-    return new AuthenticatedUser(
-      user.id,
+    return new User(
       user.username,
       user.email,
       user.password,
-      user.createdAt
+      user.createdAt,
+      user.id
     );
   }
 
@@ -30,25 +30,31 @@ class PrismaUserRepository implements IUserRepository {
 
     if (!user) return null;
 
-    return new User(user.username, user.email, user.password, user.createdAt);
+    return new User(
+      user.username,
+      user.email,
+      user.password,
+      user.createdAt,
+      user.id
+    );
   }
 
-  async findUserById(id: string): Promise<AuthenticatedUser | null> {
+  async findUserById(id: string): Promise<User | null> {
     const user = await this.prismaClient.user.findUnique({ where: { id } });
 
     if (!user) return null;
 
-    return new AuthenticatedUser(
-      user.id,
+    return new User(
       user.username,
       user.email,
       user.password,
-      user.createdAt
+      user.createdAt,
+      user.id
     );
   }
 
-  async createUser(user: User): Promise<void> {
-    await this.prismaClient.user.create({ data: user });
+  async createUser(user: User): Promise<User> {
+    return await this.prismaClient.user.create({ data: user });
   }
 }
 

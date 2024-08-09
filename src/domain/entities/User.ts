@@ -1,4 +1,5 @@
 class User {
+  id?: string;
   username: string;
   email: string;
   password: string;
@@ -8,8 +9,10 @@ class User {
     username: string,
     email: string,
     password: string,
-    createdAt: Date
+    createdAt: Date,
+    id?: string
   ) {
+    this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
@@ -17,18 +20,18 @@ class User {
   }
 }
 
-class AuthenticatedUser extends User {
-  id: string;
+// class AuthenticatedUser extends User {
+//   id: string;
 
-  constructor(
-    id: string,
-    username: string,
-    email: string,
-    password: string,
-    createdAt: Date
-  ) {
-    super(username, email, password, createdAt);
-    this.id = id;
-  }
-}
-export { User, AuthenticatedUser };
+//   constructor(
+//     id: string,
+//     username: string,
+//     email: string,
+//     password: string,
+//     createdAt: Date
+//   ) {
+//     super(username, email, password, createdAt);
+//     this.id = id;
+//   }
+// }
+export { User };
