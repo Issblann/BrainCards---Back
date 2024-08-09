@@ -13,6 +13,7 @@ BrainCards, a simple way to create box cards for study and memorization.
 
 API DOCUMENTATION WITH SWAGGER 
 
-![image](https://github.com/Issblann/BrainCards---Back/assets/109175830/69ad0e20-bc05-4f5f-b34a-9ca51b25f50c)
+![image](https://github.com/user-attachments/assets/ab710d3d-303a-42ac-b1ec-d86041e6dbfd)
+
 
 Route: `http://{PORT}/api-docs/`
