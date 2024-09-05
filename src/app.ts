@@ -4,7 +4,6 @@ import envs from './config/env';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import swaggerui from 'swagger-ui-express';
-const path = require('path');
 
 import { swaggerSpecs } from './routes/swagger';
 const app = express();
