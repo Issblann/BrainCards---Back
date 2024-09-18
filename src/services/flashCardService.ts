@@ -11,5 +11,8 @@ class FlashCardService {
   ): Promise<FlashCard[]> {
     return await flashCardRepository.createFlashCards(flashCardRequest, deckId);
   }
+  async getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]> {
+    return await flashCardRepository.getFlashCardsByDeckId(deckId);
+  }
 }
 export default new FlashCardService();

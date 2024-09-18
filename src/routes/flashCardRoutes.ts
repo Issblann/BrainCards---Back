@@ -9,9 +9,9 @@ router.post(
   authMiddleware,
   flashCardController.createFlashCards
 );
-// router.get(
-//   '/getDecksByUserId/:userId',
-//   authMiddleware,
-//   deckController.getDecksByUserId
-// );
+router.get(
+  '/getFlashcardsByDeckId/:deckId',
+  authMiddleware,
+  flashCardController.getFlashCardsByDeckId
+);
 export default router;

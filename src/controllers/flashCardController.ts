@@ -44,7 +44,26 @@ class FlashCardController {
         flashCardRequest,
         deckId
       );
+      console.log(newFlashCards);
       return res.status(201).json(newFlashCards);
+    } catch (error) {
+      let errorMessage = 'An unknown error occurred';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      res.status(500).json({ error: errorMessage });
+    }
+  }
+
+  async getFlashCardsByDeckId(req: Request, res: Response) {
+    const { deckId } = req.params;
+    try {
+      if (!deckId) {
+        res.status(400).json({ error: 'Deck ID is required' });
+        return;
+      }
+      const flashCards = await FlashCardService.getFlashCardsByDeckId(deckId);
+      return res.status(200).json(flashCards);
     } catch (error) {
       let errorMessage = 'An unknown error occurred';
       if (error instanceof Error) {

@@ -8,8 +8,8 @@ const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/api', profileRoutes);
+router.use('/api/boxes', boxRoutes);
 router.use('/api/decks', deckRoutes);
 router.use('/api/flashcards', flashCardsRoutes);
-router.use('/api/boxes', boxRoutes);
 
 export default router;

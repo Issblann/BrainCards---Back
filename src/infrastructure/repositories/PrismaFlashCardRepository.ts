@@ -73,17 +73,41 @@ class PrismaFlashCardRepository implements IFlashCardsRepository {
     id: string,
     flashCard: FlashCard
   ): Promise<Partial<FlashCard>> {
+    const getProfile = await this.prismaClient.flashCard.findUnique({
+      where: { id },
+    });
     const flashCardData = await this.prismaClient.flashCard.update({
       where: { id: id },
       data: {
-        deckId: flashCard.deckId,
-        question: flashCard.question,
-        answer: flashCard.answer,
+        ...getProfile,
+        deckId: flashCard.deckId ? flashCard.deckId : getProfile?.deckId,
+        question: flashCard.question
+          ? flashCard.question
+          : getProfile?.question,
+        answer: flashCard.answer ? flashCard.answer : getProfile?.answer,
         updatedAt: new Date(),
       },
     });
 
     return flashCardData;
+  }
+
+  async getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]> {
+    const flashCardsData = await this.prismaClient.flashCard.findMany({
+      where: { deckId },
+    });
+
+    return flashCardsData.map(
+      (flashCard) =>
+        new FlashCard(
+          flashCard.deckId,
+          flashCard.question,
+          flashCard.answer,
+          flashCard.createdAt,
+          flashCard.updatedAt,
+          flashCard.id
+        )
+    );
   }
 }
 

@@ -6,7 +6,7 @@ export interface IFlashCardsRepository {
     deckId: string
   ): Promise<FlashCard[]>;
   // getFlashCardById(id: string): Promise<FlashCard | null>;
-  // getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]>;
+  getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]>;
   updateFlashCardById(
     id: string,
     flashCard: FlashCard
