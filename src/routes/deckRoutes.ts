@@ -105,4 +105,6 @@ router.get(
   authMiddleware,
   deckController.getDecksByUserId
 );
+
+router.get('/getDeckById/:id', authMiddleware, deckController.getDeckById);
 export default router;

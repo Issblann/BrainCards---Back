@@ -68,7 +68,22 @@ class PrismaDeckRepository implements IDeckRepository {
     return resultGetDecksByUserId;
   }
 
-  // await getDecksByBoxId(boxId: string): Promise<Deck[]> {}
+  async getDeckById(id: string): Promise<Deck> {
+    const resultGetDeckById = await this.prismaClient.deck.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        flashCards: true,
+      },
+    });
+
+    if (!resultGetDeckById) {
+      throw new Error(`Deck with id ${id} not found`);
+    }
+
+    return resultGetDeckById;
+  }
 }
 
 export { PrismaDeckRepository };
