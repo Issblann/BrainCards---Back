@@ -2,7 +2,7 @@ class FlashCard {
   deckId: string;
   question: string;
   answer: string;
-  image?: string | null;
+  // image?: string | null;
   createdAt: Date;
   updatedAt?: Date;
   id?: string;
@@ -13,7 +13,7 @@ class FlashCard {
     answer: string,
     createdAt: Date,
     updatedAt: Date,
-    image?: string,
+    // image?: string,
     id?: string
   ) {
     this.deckId = deckId;
@@ -21,8 +21,21 @@ class FlashCard {
     this.answer = answer;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.image = image;
+    // this.image = image;
     this.id = id;
   }
 }
-export { FlashCard };
+
+enum EnumDifficultyLevel {
+  EASY = 'Easy',
+  MEDIUM = 'Medium',
+  HARD = 'Hard',
+}
+
+interface FlashCardRequest {
+  topic: string;
+  description?: string;
+  quantityFlashcards: number;
+  difficultyLevel: EnumDifficultyLevel;
+}
+export { FlashCard, FlashCardRequest, EnumDifficultyLevel };

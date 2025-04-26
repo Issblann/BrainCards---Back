@@ -5,13 +5,13 @@ import flashCardController from '../controllers/flashCardController';
 const router = Router();
 
 router.post(
-  '/createFlashCard/:deckId',
+  '/createFlashCards/:deckId',
   authMiddleware,
-  flashCardController.createFlashCard
+  flashCardController.createFlashCards
 );
-// router.get(
-//   '/getDecksByUserId/:userId',
-//   authMiddleware,
-//   deckController.getDecksByUserId
-// );
+router.get(
+  '/getFlashcardsByDeckId/:deckId',
+  authMiddleware,
+  flashCardController.getFlashCardsByDeckId
+);
 export default router;

@@ -46,5 +46,18 @@ class DeckController {
       });
     }
   }
+
+  async getDeckById(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+    try {
+      const deck = await DeckService.getDeckById(id);
+      res.json(deck);
+    } catch (error) {
+      res.status(500).json({
+        error: 'An unknown error occurred getting the deck by id',
+      });
+      throw error;
+    }
+  }
 }
 export default new DeckController();

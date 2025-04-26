@@ -13,5 +13,9 @@ class DeckService {
   async getDecksByUserId(userId: string): Promise<Deck[]> {
     return await deckRepository.getDecksByUserId(userId);
   }
+
+  async getDeckById(id: string): Promise<Deck> {
+    return await deckRepository.getDeckById(id);
+  }
 }
 export default new DeckService();

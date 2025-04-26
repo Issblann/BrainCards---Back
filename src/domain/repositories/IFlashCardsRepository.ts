@@ -1,9 +1,12 @@
-import { FlashCard } from '../entities/FlashCard';
+import { FlashCard, FlashCardRequest } from '../entities/FlashCard';
 
 export interface IFlashCardsRepository {
-  createFlashCard(flashCard: FlashCard): Promise<FlashCard>;
+  createFlashCards(
+    flashCardRequest: FlashCardRequest,
+    deckId: string
+  ): Promise<FlashCard[]>;
   // getFlashCardById(id: string): Promise<FlashCard | null>;
-  // getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]>;
+  getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]>;
   updateFlashCardById(
     id: string,
     flashCard: FlashCard
