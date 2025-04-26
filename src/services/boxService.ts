@@ -11,6 +11,18 @@ class BoxService {
   async getBoxesByUserId(userId: string): Promise<Box[]> {
     return await boxRepository.getBoxesByUserId(userId);
   }
+
+  async getBoxById(id: string): Promise<Box | null> {
+    return await boxRepository.getBoxById(id);
+  }
+
+  async updateBox(id: string, boxData: Partial<Box>): Promise<Box | null> {
+    return await boxRepository.updateBox(id, boxData);
+  }
+
+  async deleteBox(id: string): Promise<void> {
+    return await boxRepository.deleteBox(id);
+  }
 }
 
 export default new BoxService();

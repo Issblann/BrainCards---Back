@@ -15,44 +15,14 @@ class PrismaDeckRepository implements IDeckRepository {
         title: deck.title,
         description: deck.description,
         userId: deck.userId || '',
-        boxId: deck.boxId,
+        boxId: deck.boxId, 
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     });
+  
     console.log(resultCreateDeck);
-
-    await this.prismaClient.box.update({
-      where: {
-        id: deck.boxId ?? undefined,
-      },
-      data: {
-        decks: {
-          connect: { id: resultCreateDeck.id },
-        },
-      },
-    });
-    const allBox = await this.prismaClient.box.findFirst({
-      where: {
-        boxName: 'All',
-        userId: deck.userId,
-      },
-    });
-
-    if (allBox) {
-      await this.prismaClient.box.update({
-        where: {
-          id: allBox.id,
-        },
-        data: {
-          decks: {
-            connect: {
-              id: resultCreateDeck.id,
-            },
-          },
-        },
-      });
-    }
+  
     return resultCreateDeck;
   }
 
@@ -63,6 +33,11 @@ class PrismaDeckRepository implements IDeckRepository {
       },
       include: {
         flashCards: true,
+        boxes: {
+          select: {
+            boxName: true,
+          }
+        }
       },
     });
     return resultGetDecksByUserId;
