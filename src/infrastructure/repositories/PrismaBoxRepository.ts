@@ -22,25 +22,13 @@ class PrismaBoxRepository implements IBoxRepository {
 
     if (existingBox) return existingBox;
 
-    const newBox = await this.prismaClient.box.create({
-      data: {
-        boxName: box.boxName,
-        userId: box.userId || '',
-        decks: {
-          create: box.decks.map((deck: any) => ({
-            title: deck.title,
-            userId: deck.userId,
-            createdAt: deck.createdAt,
-            updatedAt: deck.updatedAt,
-          })),
-        },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      include: {
-        decks: true,
-      },
-    });
+    const boxToCreate = {
+      boxName: box.boxName,
+      userId: box.userId || '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    const newBox = await this.prismaClient.box.create({ data: boxToCreate });
     return newBox;
   }
 
@@ -55,6 +43,44 @@ class PrismaBoxRepository implements IBoxRepository {
     });
     return resultGetBoxesByUserId;
   }
+
+  async getBoxById(id: string): Promise<Box | null> {
+      const box = await this.prismaClient.box.findUnique({
+          where: {
+              id,
+          },
+          include: {
+              decks: true,
+          },
+      });
+      return box;
+  }
+
+  async updateBox(id: string, boxData: Partial<Box>): Promise<Box | null> {
+      const updatedBox = await this.prismaClient.box.update({
+          where: {
+              id,
+          },
+          data: {
+              boxName: boxData.boxName,
+              updatedAt: new Date(),
+          },
+          include: {
+              decks: true,
+          },
+      });
+      return updatedBox;
+  }
+
+  async deleteBox(id: string): Promise<void> {
+      await this.prismaClient.box.delete({
+          where: {
+              id,
+          },
+      });
+  }
 }
+
+
 
 export { PrismaBoxRepository };
