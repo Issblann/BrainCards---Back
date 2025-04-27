@@ -96,7 +96,7 @@ class BoxController {
               return res.status(400).json({ error: 'Box id is required' });
           }
           await boxService.deleteBox(id);
-          return res.status(204).send();
+          return res.status(200).send({ message: 'Box deleted successfully' });
       } catch (error) {
           let errorMessage = 'An unknown error occurred';
           if (error instanceof Error) {
