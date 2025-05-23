@@ -17,5 +17,13 @@ class DeckService {
   async getDeckById(id: string): Promise<Deck> {
     return await deckRepository.getDeckById(id);
   }
+
+  async updateDeck(deck: Deck): Promise<Deck> {
+    return await deckRepository.updateDeck(deck);
+  }
+
+  async deleteDeck(id: string): Promise<void> {
+    return await deckRepository.deleteDeck(id);
+  }
 }
 export default new DeckService();

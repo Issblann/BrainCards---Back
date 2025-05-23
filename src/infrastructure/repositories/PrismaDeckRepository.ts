@@ -59,6 +59,30 @@ class PrismaDeckRepository implements IDeckRepository {
 
     return resultGetDeckById;
   }
+
+  async updateDeck(deck: Deck): Promise<Deck> {
+    const resultUpdateDeck = await this.prismaClient.deck.update({
+      where: {
+        id: deck.id,
+      },
+      data: {
+        title: deck.title,
+        description: deck.description,
+        boxId: deck.boxId, 
+        updatedAt: new Date(),
+      },
+    });
+
+    return resultUpdateDeck;
+  }
+
+  async deleteDeck(id: string): Promise<void> {
+    await this.prismaClient.deck.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
 }
 
 export { PrismaDeckRepository };

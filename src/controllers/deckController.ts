@@ -59,5 +59,55 @@ class DeckController {
       throw error;
     }
   }
+
+  async updateDeck(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+    const { title, description, boxId } = req.body;
+    try {
+      if (!id) {
+        res.status(400).json({ error: 'Deck ID is required' });
+        return;
+      }
+
+      // Fetch the existing deck to get userId and createdAt
+      const existingDeck = await DeckService.getDeckById(id);
+      if (!existingDeck) {
+        res.status(404).json({ error: 'Deck not found' });
+        return;
+      }
+
+      const deck: Deck = {
+        id,
+        title,
+        description,
+        boxId,
+        userId: existingDeck.userId,
+        createdAt: existingDeck.createdAt,
+        updatedAt: new Date(),
+      };
+      const updatedDeck = await DeckService.updateDeck(deck);
+      res.json(updatedDeck);
+    } catch (error) {
+      res.status(500).json({
+        error: 'An unknown error occurred updating the deck',
+      });
+    }
+  }
+
+  async deleteDeck(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+    try {
+      if (!id) {
+        res.status(400).json({ error: 'Deck ID is required' });
+        return;
+      }
+      await DeckService.deleteDeck(id);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({
+        error: 'An unknown error occurred deleting the deck',
+      });
+    }
+  }
 }
 export default new DeckController();

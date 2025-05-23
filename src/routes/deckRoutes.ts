@@ -107,4 +107,7 @@ router.get(
 );
 
 router.get('/getDeckById/:id', authMiddleware, deckController.getDeckById);
+
+router.put('/updateDeck/:id', authMiddleware, deckController.updateDeck);
+router.delete('/deleteDeck/:id', authMiddleware, deckController.deleteDeck);
 export default router;

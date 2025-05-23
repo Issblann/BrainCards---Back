@@ -1,8 +1,8 @@
 import express from 'express';
 import request from 'supertest';
-import authRoutes from './authRoutes';
-import authService from '../services/authService';
-import authMiddleware from '../infrastructure/middleware/authMiddleware';
+import authRoutes from '../../routes/authRoutes';
+import authService from '../../services/authService';
+import authMiddleware from '../../infrastructure/middleware/authMiddleware';
 const app = express();
 app.use(express.json());
 app.use('/auth', authRoutes);
