@@ -71,5 +71,23 @@ class FlashCardController {
       res.status(500).json({ error: errorMessage });
     }
   }
+
+  async deleteFlashCardById(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      if (!id) {
+        res.status(400).json({ error: 'FlashCard ID is required' });
+        return;
+      }
+      await FlashCardService.deleteFlashCardById(id);
+      return res.status(200).json({message: 'FlashCard deleted successfully'});
+    } catch (error) {
+      let errorMessage = 'An unknown error occurred';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      res.status(500).json({ error: errorMessage });
+    }
+  }
 }
 export default new FlashCardController();

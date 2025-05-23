@@ -14,5 +14,8 @@ class FlashCardService {
   async getFlashCardsByDeckId(deckId: string): Promise<FlashCard[]> {
     return await flashCardRepository.getFlashCardsByDeckId(deckId);
   }
+  async deleteFlashCardById(id: string): Promise<void> {
+    await flashCardRepository.deleteFlashCardById(id);
+  }
 }
 export default new FlashCardService();
