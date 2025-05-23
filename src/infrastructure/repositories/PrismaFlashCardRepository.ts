@@ -109,6 +109,12 @@ class PrismaFlashCardRepository implements IFlashCardsRepository {
         )
     );
   }
+
+  async deleteFlashCardById(id: string): Promise<void> {
+    await this.prismaClient.flashCard.delete({
+      where: { id },
+    });
+  }
 }
 
 export { PrismaFlashCardRepository };

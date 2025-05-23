@@ -14,4 +14,9 @@ router.get(
   authMiddleware,
   flashCardController.getFlashCardsByDeckId
 );
+router.delete(
+  '/deleteFlashCard/:id',
+  authMiddleware,
+  flashCardController.deleteFlashCardById
+);
 export default router;
