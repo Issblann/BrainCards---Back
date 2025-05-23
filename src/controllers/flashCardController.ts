@@ -44,7 +44,6 @@ class FlashCardController {
         flashCardRequest,
         deckId
       );
-      console.log(newFlashCards);
       return res.status(201).json(newFlashCards);
     } catch (error) {
       let errorMessage = 'An unknown error occurred';
