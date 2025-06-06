@@ -9,7 +9,7 @@ const options = {
       description: 'API documentation for Brain Cards',
     },
 
-    servers: [{ url: 'http://localhost:3000/' }],
+    servers: [{ url: `${process.env.BASE_URL}:3000/` }],
   },
 
   apis: ['./src/routes/*.ts'],

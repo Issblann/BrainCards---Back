@@ -37,16 +37,15 @@ const swaggerDocs = (app: any, port: string | number) => {
   });
 
   console.log(
-    `Swagger docs are available at http://localhost:${port}/api-docs`
+    `Swagger docs are available at ${process.env.BASE_URL}:${port}/api-docs`
   );
 };
 app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerSpecs));
 
 const corsOptions = {
-  origin: envs.clientUrl,
+  origin: '*',
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
 app.use(cors(corsOptions));
