@@ -3,12 +3,65 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+model User {
+  id        String   @id @default(cuid())
+  username  String    @unique
+  email     String   @unique
+  password  String  
+  createdAt DateTime @default(now())
+  Profile   Profile?
+  Deck      Deck[]
+  Box       Box[]
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String @unique
+  user User @relation(fields: [userId], references: [id])
+  name      String
+  lastName  String?
+  bio       String?
+  image     String?
+  updatedAt DateTime @updatedAt
+}
+
+model FlashCard { 
+  id        String   @id @default(cuid())
+  deckId    String
+  deck      Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Deck {
+  id        String   @id @default(cuid())
+  userId    String  
+  user      User @relation(fields: [userId], references: [id])
+  boxId     String?
+  boxes     Box?     @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  title     String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  flashCards FlashCard[]
+}
+model Box {
+  id        String   @id @default(cuid())
+  boxName     String
+  userId    String   
+  user      User @relation(fields: [userId], references: [id])
+  decks     Deck[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
