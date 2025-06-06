@@ -1,4 +1,5 @@
 import swaggerjsdoc from 'swagger-jsdoc';
+import envs from '../config/env';
 
 const options = {
   definition: {
@@ -9,7 +10,7 @@ const options = {
       description: 'API documentation for Brain Cards',
     },
 
-    servers: [{ url: `${process.env.BASE_URL}:3000/` }],
+    servers: [{ url: `${envs.base_url}/` }],
   },
 
   apis: ['./src/routes/*.ts'],

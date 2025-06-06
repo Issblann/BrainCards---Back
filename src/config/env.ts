@@ -7,6 +7,7 @@ const envs = {
   clientUrl: process.env.CLIENT_URL,
   openaiKey: process.env.OPENAI_API_KEY,
   openainOrgId: process.env.OPENAI_ORG_ID,
+  base_url: process.env.BASE_URL
 };
 
 export default envs;
