@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles --forceExit --runInBand",
-    "start": "nodemon src/app.ts"
+    "start": "node api/index.ts"
   },
   "keywords": [],
   "author": "",
